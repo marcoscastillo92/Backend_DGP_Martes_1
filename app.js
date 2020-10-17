@@ -8,6 +8,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+require('./database');
+
+const nodeApiDocGenerator = require('node-api-doc-generator')
+nodeApiDocGenerator(app,'localhost',3000)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
