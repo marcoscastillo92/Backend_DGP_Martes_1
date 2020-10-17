@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {type: String},
     role: {type: String},
     birthDate: {type: Date},
-    token: {type: String},
+    token: {type: String, default: this._id},
     createdAt: {type: Date, default: Date.now}
 });
 

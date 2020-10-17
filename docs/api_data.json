@@ -1,5 +1,121 @@
 [
   {
+    "type": "post",
+    "url": "/user/create",
+    "title": "",
+    "name": "CreateUser",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Users name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>Users username ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Users password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": true,
+            "field": "birthDate",
+            "description": "<p>Optional. Users birthdate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "email",
+            "description": "<p>Optional. Users email.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "phoneNumber",
+            "description": "<p>Optional. Users phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "role",
+            "description": "<p>Users role.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"username\" : \"nickname\",\n    \"name\" : \"Nombre_Usuario\",\n    \"password\" : \"test\",\n    \"role\" : \"Tutor\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Created object user with his _id.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"_id\": \"5f8affc231fe1db68a86997c\",\n    \"name\": \"Nombre_Usuario\",\n    \"username\": \"nickname\",\n    \"password\": \"test\",\n    \"role\": \"Tutor\",\n    \"createdAt\": \"2020-10-17T14:29:22.109Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MissingFields/ExtraFields",
+            "description": "<p>The mandatory fields that are missing or not valid extra fields.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"error\": \"Missing Fields\",\n  \"missing_fields\": \"['name','username','password','role']\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/users/create"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "routes/users.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/user/:id",
     "title": "",
