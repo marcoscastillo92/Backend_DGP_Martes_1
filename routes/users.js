@@ -54,7 +54,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /**
- * @api {post} /user/create
+ * @api {post} /users/create
  * @apiName CreateUser 
  * @apiGroup User
  * @apiParam {String} name          Users name.
