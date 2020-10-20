@@ -2,6 +2,7 @@ const { json } = require('express');
 var express = require('express');
 const User = require('../models/User');
 var router = express.Router();
+const Logger = require('./logController');
 
 //Correlaciones de campos del objeto usuario
 const neededUserFields = ["name","username","password","role"];
@@ -18,6 +19,7 @@ async function getUserInfoById(req, res) {
         var user = await User.findById(id);
     }catch{
         user = {"error": "UserNotFound"};
+        Logger.addLog('userController', 'User not found', {'id': id, 'userObject': user, 'request': req});
     }
     res.send(user);
 }
@@ -50,13 +52,21 @@ async function createUser(req, res){
     if(missingFields.length > 0){
         //console.log("MISSING FIELDS: " + missingFields);
         msgErr = {"error" : "Missing fields", "missing_fields" : missingFields};
+        Logger.addLog('userController', 'Creation missing fields', {'missingFields': missingFields, 'requestBody': req.body, 'request': req});
         res.send(msgErr);
     }else if(extraFields.length > 0){
         msgErr = {"error" : "Extra fields", "extra_fields" : extraFields};
+        Logger.addLog('userController', 'Creation extra fields', {'extraFields': extraFields, 'requestBody': req.body, 'request': req});
         res.send(msgErr);
     }else{
         var newUser = await new User(req.body)
-        newUser.save();
+        newUser.save((err, result) =>{
+            if(err){
+                Logger.addLog('userController', 'Creation error', {'error': err, 'userObject': newUser, 'requestBody': req.body, 'request': req});
+            }else{
+                Logger.addLog('userController', 'User created', {'userObject': result, 'requestBody': req.body, 'request': req});
+            }
+        });
         res.send(newUser);
     }
 }

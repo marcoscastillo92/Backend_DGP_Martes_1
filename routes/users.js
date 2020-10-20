@@ -1,7 +1,7 @@
 var express = require('express');
 const User = require('../models/User');
 var router = express.Router();
-var userService = require('../services/userServices')
+var userService = require('../controllers/userController')
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
