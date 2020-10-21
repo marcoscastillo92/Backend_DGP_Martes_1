@@ -1,7 +1,7 @@
 var express = require('express');
 const User = require('../models/User');
 var router = express.Router();
-var userService = require('../controllers/userController')
+var userController = require('../controllers/userController')
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
@@ -50,7 +50,7 @@ router.get('/', async function(req, res, next) {
  * @apiSampleRequest http://localhost:3000/users/5f8abca918323947000b712a
  */
 router.get('/:id', async function(req, res, next) {
-  userService.getUserInfoById(req, res);
+  userController.getUserInfoById(req, res);
 });
 
 /**
@@ -99,7 +99,7 @@ router.get('/:id', async function(req, res, next) {
  * @apiSampleRequest http://localhost:3000/users/create
  */
 router.post('/create', async function(req, res, next) {
-  userService.createUser(req, res);
+  userController.createUser(req, res);
 });
 
 module.exports = router;

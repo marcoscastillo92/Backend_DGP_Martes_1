@@ -19,7 +19,7 @@ async function getUserInfoById(req, res) {
         var user = await User.findById(id);
     }catch{
         user = {"error": "UserNotFound"};
-        Logger.addLog('userController', 'User not found', {'id': id, 'userObject': user, 'request': req});
+        Logger.addLog('userController', 'User not found', {'id': id, 'requestParams': req.params});
     }
     res.send(user);
 }
@@ -52,20 +52,20 @@ async function createUser(req, res){
     if(missingFields.length > 0){
         //console.log("MISSING FIELDS: " + missingFields);
         msgErr = {"error" : "Missing fields", "missing_fields" : missingFields};
-        Logger.addLog('userController', 'Creation missing fields', {'missingFields': missingFields, 'requestBody': req.body, 'request': req});
+        Logger.addLog('userController', 'Creation missing fields', {'missingFields': missingFields, 'requestBody': req.body});
         res.send(msgErr);
     }else if(extraFields.length > 0){
         msgErr = {"error" : "Extra fields", "extra_fields" : extraFields};
-        Logger.addLog('userController', 'Creation extra fields', {'extraFields': extraFields, 'requestBody': req.body, 'request': req});
+        Logger.addLog('userController', 'Creation extra fields', {'extraFields': extraFields, 'requestBody': req.body});
         res.send(msgErr);
     }else{
-        var newUser = await new User(req.body)
+        var userData = req.body;
+        userData.role = userData.role.toLowerCase();
+        var newUser = await new User(userData)
         newUser.save((err, result) =>{
-            if(err){
-                Logger.addLog('userController', 'Creation error', {'error': err, 'userObject': newUser, 'requestBody': req.body, 'request': req});
-            }else{
-                Logger.addLog('userController', 'User created', {'userObject': result, 'requestBody': req.body, 'request': req});
-            }
+            if(err) Logger.addLog('userController', 'Creation error', {'error': err, 'userObject': result, 'requestBody': userData});
+            else Logger.addLog('userController', 'User created', {'userObject': result, 'requestBody': userData});
+
         });
         res.send(newUser);
     }

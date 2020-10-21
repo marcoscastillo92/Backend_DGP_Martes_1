@@ -8,13 +8,10 @@ const Log = require('../models/Log');
  * @param {Object} data Objeto para añadir información relevante al log para ver sus trazas.
  */
 async function addLog(source, message, data){
-    var log = new Log({source: source, message: message, data: data, createdAt: Date.now});
+    var log = await new Log({source: source, message: message, data: data});
     log.save(function(err, result){
         if(err){
             console.log("Log error: " +err);
-            return false;
-        }else{
-            return true;
         }
     });
 }
