@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     name: {type: String},
@@ -8,7 +9,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {type: String},
     role: {type: String},
     birthDate: {type: Date},
-    token: {type: String, default: this._id},
+    token: {type: String, default: this.generateToken},
     createdAt: {type: Date, default: Date.now}
 });
 
@@ -21,4 +22,10 @@ userSchema.methods.validaPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };*/
 
+userSchema.method.generateToken = function(){
+    token = crypo.randomBytes(64).toString('hex');
+    var user = this.find({'token' : token});
+    if(user) return token;
+    else this.generateToken;
+}
 module.exports = mongoose.model('users', userSchema);
