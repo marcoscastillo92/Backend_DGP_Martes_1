@@ -2,9 +2,11 @@ var express = require('express');
 const User = require('../models/User');
 var router = express.Router();
 var userController = require('../controllers/userController')
+var auth = require('../controllers/authController')
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
+  console.log(req.session)
   const newUser = new User({"nombre":"Federico García Lorca","email":"poeta@españa.es","username":"fedegalo27","password":"granada","phoneNumber":"696966969","role":"poeta","token":"dsjgprwk39tgm0rwj2q"});
   await newUser.save();
   
@@ -13,9 +15,9 @@ router.get('/', async function(req, res, next) {
 
 
 /**
- * @api {get} /user/:id
+ * @api {get} /users/:id
  * @apiName getUser 
- * @apiGroup User
+ * @apiGroup Get User
  * @apiParam {Number} id Users unique ID.
  * 
  * 
@@ -49,14 +51,14 @@ router.get('/', async function(req, res, next) {
  * 
  * @apiSampleRequest http://localhost:3000/users/5f8abca918323947000b712a
  */
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', auth, async function(req, res, next) {
   userController.getUserInfoById(req, res);
 });
 
 /**
  * @api {post} /users/create
- * @apiName CreateUser 
- * @apiGroup User
+ * @apiName User 
+ * @apiGroup Create User
  * @apiParam {String} name          Users name.
  * @apiParam {String} username      Users username ID.
  * @apiParam {String} password      Users password.
@@ -98,8 +100,88 @@ router.get('/:id', async function(req, res, next) {
  * 
  * @apiSampleRequest http://localhost:3000/users/create
  */
-router.post('/create', async function(req, res, next) {
+router.post('/create', auth, async function(req, res, next) {
   userController.createUser(req, res);
+});
+
+/**
+ * @api {post} /users/login
+ * @apiName userLogin 
+ * @apiGroup Login
+ * 
+ * @apiParam  {String} Username Nombre de usuario.
+ * @apiParam  {String} Pasword Contraseña del usuario.
+ * 
+ * @apiSuccess {String} Result Estado de la petición.
+ * @apiSuccess {String} token Users web token.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "result": "success",
+ *       "token": "15454688fddsf165"
+ *     }
+ * 
+ * @apiError UserNotFound The user was not found.
+ * 
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotRegistred"
+ *       "message": "User not registred"
+ *     }
+ * 
+ * @apiError UserLoggedIn User already logged in.
+ * 
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "result": "error"
+ *        "message": "You are already logged"
+ *     }
+ * 
+ * @apiSampleRequest http://localhost:3000/users/login
+ */
+
+router.post('/login', async (req, res, next) =>{
+    if(req.session && req.session.user){
+      var response = {result:"error", message:"You are already logged"}
+      res.send(response);
+    }
+    userController.userLogin(req, res);
+});
+
+
+/**
+ * @api {post} /users/logout
+ * @apiName userLogut 
+ * @apiGroup User Logout 
+ * 
+ * 
+ * @apiSuccess {String} Result
+ * @apiSuccess {String} Message
+ *
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "result": "ok",
+ *       "message" : "Logout done correctly"
+ *      
+ *     }
+ * 
+ * @apiError User unhautarized.
+ * 
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 Unauthorized
+ * 
+ * @apiSampleRequest http://localhost:3000/users/logout
+ */
+
+router.post('/logout', auth, (req, res, next) =>{
+    req.session.destroy();
+    var response = {result:"success", message:"Logout done correctly."}
+    res.send(response)
 });
 
 module.exports = router;
