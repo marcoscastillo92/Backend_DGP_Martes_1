@@ -1,10 +1,10 @@
 define({ "api": [
   {
     "type": "post",
-    "url": "/user/create",
+    "url": "/users/create",
     "title": "",
-    "name": "CreateUser",
-    "group": "User",
+    "name": "User",
+    "group": "Create_User",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -113,14 +113,14 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "routes/users.js",
-    "groupTitle": "User"
+    "groupTitle": "Create_User"
   },
   {
     "type": "get",
-    "url": "/user/:id",
+    "url": "/users/:id",
     "title": "",
     "name": "getUser",
-    "group": "User",
+    "group": "Get_User",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -222,6 +222,159 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "routes/users.js",
-    "groupTitle": "User"
+    "groupTitle": "Get_User"
+  },
+  {
+    "type": "post",
+    "url": "/users/login",
+    "title": "",
+    "name": "userLogin",
+    "group": "Login",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Username",
+            "description": "<p>Nombre de usuario.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Pasword",
+            "description": "<p>Contraseña del usuario.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "Result",
+            "description": "<p>Estado de la petición.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Users web token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"result\": \"success\",\n  \"token\": \"15454688fddsf165\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>The user was not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserLoggedIn",
+            "description": "<p>User already logged in.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"error\": \"UserNotRegistred\"\n  \"message\": \"User not registred\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"result\": \"error\"\n   \"message\": \"You are already logged\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/users/login"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "routes/users.js",
+    "groupTitle": "Login"
+  },
+  {
+    "type": "post",
+    "url": "/users/logout",
+    "title": "",
+    "name": "userLogut",
+    "group": "User_Logout",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "Result",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "Message",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"result\": \"ok\",\n  \"message\" : \"Logout done correctly\"\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "User",
+            "description": "<p>unhautarized.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/users/logout"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "routes/users.js",
+    "groupTitle": "User_Logout"
   }
 ] });
