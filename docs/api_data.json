@@ -12,6 +12,13 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "token",
+            "description": "<p>Authorization token from the user that creates a new one</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "name",
             "description": "<p>Users name.</p>"
           },
@@ -62,7 +69,7 @@
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n    \"username\" : \"nickname\",\n    \"name\" : \"Nombre_Usuario\",\n    \"password\" : \"test\",\n    \"role\" : \"Tutor\",\n}",
+          "content": "{\n    \"token\" : \"1aa3cc55d3efb4e5bbae6030443ab9ab612f4a1e28256236b3f2afab409e683017535518465430a9094b78a5eca966d0873ad914bbd60d38d99e24dd4b3c050f\"\n    \"username\" : \"nickname\",\n    \"name\" : \"Nombre_Usuario\",\n    \"password\" : \"test\",\n    \"role\" : \"Tutor\",\n}",
           "type": "json"
         }
       ]
@@ -89,6 +96,14 @@
     },
     "error": {
       "fields": {
+        "401": [
+          {
+            "group": "401",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": ""
+          }
+        ],
         "Error 4xx": [
           {
             "group": "Error 4xx",

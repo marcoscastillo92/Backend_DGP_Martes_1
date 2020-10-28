@@ -68,7 +68,8 @@ async function getUserInfoById(req, res) {
  * @return new user object or json with missing fields
  */
 async function createUser(req, res){
-   if(correctFields(req, res, neededUserFields, allUserFields)){
+    delete req.body.token;
+    if(correctFields(req, res, neededUserFields, allUserFields)){
         var userData = req.body;
         userData.role = userData.role.toLowerCase();
         userData.password = bcrypt.hashSync(userData.password, bcrypt.genSaltSync(10));
