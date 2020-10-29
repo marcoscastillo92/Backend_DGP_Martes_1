@@ -3,22 +3,52 @@ const AdminBroExpress = require('@admin-bro/express');
 const AdminBroMongoose = require('@admin-bro/mongoose');
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const Log = require('../models/Log');
 var bcrypt = require('bcrypt');
 
 AdminBro.registerAdapter(AdminBroMongoose);
 
+const isAdminRole = ({currentUser}) => currentUser && currentUser.role === 'admin';
+
 const adminBro = new AdminBro({
-  databases: [mongoose],
+  resources: [
+    {
+      resource: User,
+      options: {
+        actions: {
+          new: {isAccessible: isAdminRole },
+          edit: {isAccessible: isAdminRole },
+          delete: {isAccessible: isAdminRole },
+        }
+      }
+    },
+    {
+      resource: Log,
+      options: {
+        isVisible: isAdminRole
+      }
+    }
+  ],
+  locale: {
+    language: 'es',
+    translations: {
+      labels: {
+        User: 'Usuarios',
+        Log: 'Logs',
+      }
+    }
+  },
+  branding: {
+    companyName: 'Asociación Vale',
+  },
   rootPath: '/admin',
 });
 
-const router = AdminBroExpress.buildRouter(adminBro);
-const router2 = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
   authenticate: async (username, password) => {
     const user = await User.findOne({ username:username })
     if (user) {
       const matched = await bcrypt.compare(password, user.password)
-      //const matched = user.password == password;
       if (matched && (user.role == 'admin' || user.role == 'tutor')) {
         return user
       }
@@ -28,4 +58,4 @@ const router2 = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
   cookiePassword: 'some-secret-password-used-to-secure-cookie',
 })
 
-module.exports = router2;
+module.exports = router;

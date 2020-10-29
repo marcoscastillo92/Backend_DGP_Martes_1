@@ -59,6 +59,7 @@ router.get('/:id', auth, async function(req, res, next) {
  * @api {post} /users/create
  * @apiName User 
  * @apiGroup Create User
+ * @apiParam {String} token         Authorization token from the user that creates a new one
  * @apiParam {String} name          Users name.
  * @apiParam {String} username      Users username ID.
  * @apiParam {String} password      Users password.
@@ -69,6 +70,7 @@ router.get('/:id', auth, async function(req, res, next) {
  * 
  * @apiParamExample {json} Request-Example:
  *   {
+ *       "token" : "1aa3cc55d3efb4e5bbae6030443ab9ab612f4a1e28256236b3f2afab409e683017535518465430a9094b78a5eca966d0873ad914bbd60d38d99e24dd4b3c050f"
  *       "username" : "nickname",
  *       "name" : "Nombre_Usuario",
  *       "password" : "test",
@@ -97,6 +99,8 @@ router.get('/:id', auth, async function(req, res, next) {
  *       "error": "Missing Fields",
  *       "missing_fields": "['name','username','password','role']"
  *     }
+ * 
+ * @apiError (401) Unauthorized
  * 
  * @apiSampleRequest http://localhost:3000/users/create
  */
