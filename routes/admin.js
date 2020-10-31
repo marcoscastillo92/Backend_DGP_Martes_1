@@ -48,8 +48,8 @@ const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
   authenticate: async (username, password) => {
     const user = await User.findOne({ username:username })
     if (user) {
-      const matched = await bcrypt.compare(password, user.password)
-      if (matched && (user.role == 'admin' || user.role == 'tutor')) {
+      //const matched = await bcrypt.compare(password, user.password)
+      if ((password == user.password) && (user.role == 'admin' || user.role == 'tutor')) {
         return user
       }
     }
