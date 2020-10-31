@@ -33,11 +33,11 @@ function correctFields(req, res, neededFields, allFields){
         //console.log("MISSING FIELDS: " + missingFields);
         msgErr = {"error" : "Missing fields", "missing_fields" : missingFields};
         Logger.addLog('userController', 'Creation missing fields', {'missingFields': missingFields, 'requestBody': req.body});
-        res.send(msgErr);
+        res.status(400).send(msgErr);
     }else if(extraFields.length > 0){
         msgErr = {"error" : "Extra fields", "extra_fields" : extraFields};
         Logger.addLog('userController', 'Creation extra fields', {'extraFields': extraFields, 'requestBody': req.body});
-        res.send(msgErr);
+        res.status(400).send(msgErr);
     }else{
         return true;
     }
@@ -56,6 +56,7 @@ async function getUserInfoById(req, res) {
     }catch{
         user = {"error": "UserNotFound"};
         Logger.addLog('userController', 'User not found', {'id': id, 'requestParams': req.params});
+        res.status(404).send(user);
     }
     res.send(user);
 }
@@ -91,10 +92,10 @@ async function userLogin(req, res){
             var response = {result: "success", token: userFromBD.token}
             req.session.user = userFromBD;
             req.session.token = response.token;
-            res.send(response)
+            res.send(response);
         }else{
             var response = {result: "error", message: "User not registred"}
-            res.send(response)
+            res.status(404).send(response);
         }
     }
 }
