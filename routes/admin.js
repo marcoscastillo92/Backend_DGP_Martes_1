@@ -23,6 +23,7 @@ const adminBro = new AdminBro({
       }
     },
     {
+      
       resource: Log,
       options: {
         isVisible: isAdminRole
