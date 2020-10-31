@@ -1,5 +1,6 @@
 var express = require('express');
 const User = require('../models/User');
+const Pictogram = require('../models/Pictogram');
 var router = express.Router();
 var userController = require('../controllers/userController')
 var auth = require('../controllers/authController')
@@ -13,6 +14,21 @@ router.get('/', async function(req, res, next) {
   res.send(newUser);
 });
 
+/* GET users listing. */
+router.get('/insert-user', async function(req, res, next) {
+  //console.log(req.session)
+  var textoPictograma = await Pictogram.find({name:"cerdo"})
+  let password = "";
+  for (let index = 0; index < 6; index++) {
+    password += textoPictograma[0].key;
+  } 
+  console.log(textoPictograma[0]);
+  const newUser = new User({"nombre":"Federico García Lorca","email":"poeta@españa.es","username":"fedegalo27","password":password,"phoneNumber":"696966969",
+                            "role":"poeta","token":"dsjgprwk39tgm0rwj2q"});
+  await newUser.save();
+  
+  res.send(newUser);
+});
 
 /**
  * @api {get} /users/:id

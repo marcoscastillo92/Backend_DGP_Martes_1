@@ -6,8 +6,8 @@ var bcrypt = require('bcrypt');
 const neededUserFields = ["name","username","password","role"];
 const allUserFields = ["name","username","password","role","email","phoneNumber","birthDay"];
 
-const neededUserLoginFields = ["username","password"];
-const allUserLoginFields = ["username","password"];
+const neededUserLoginFields = ["password"];
+const allUserLoginFields = ["password"];
 
 
 function correctFields(req, res, neededFields, allFields){
@@ -33,11 +33,11 @@ function correctFields(req, res, neededFields, allFields){
         //console.log("MISSING FIELDS: " + missingFields);
         msgErr = {"error" : "Missing fields", "missing_fields" : missingFields};
         Logger.addLog('userController', 'Creation missing fields', {'missingFields': missingFields, 'requestBody': req.body});
-        res.send(msgErr);
+        res.status(400).send(msgErr);
     }else if(extraFields.length > 0){
         msgErr = {"error" : "Extra fields", "extra_fields" : extraFields};
         Logger.addLog('userController', 'Creation extra fields', {'extraFields': extraFields, 'requestBody': req.body});
-        res.send(msgErr);
+        res.status(400).send(msgErr);
     }else{
         return true;
     }
@@ -56,6 +56,7 @@ async function getUserInfoById(req, res) {
     }catch{
         user = {"error": "UserNotFound"};
         Logger.addLog('userController', 'User not found', {'id': id, 'requestParams': req.params});
+        res.status(404).send(user);
     }
     res.send(user);
 }
@@ -72,7 +73,7 @@ async function createUser(req, res){
     if(correctFields(req, res, neededUserFields, allUserFields)){
         var userData = req.body;
         userData.role = userData.role.toLowerCase();
-        userData.password = bcrypt.hashSync(userData.password, bcrypt.genSaltSync(10));
+        //userData.password = bcrypt.hashSync(userData.password, bcrypt.genSaltSync(10));
         var newUser = await new User(userData);
         newUser.save((err, result) =>{
             if(err) Logger.addLog('userController', 'Creation error', {'error': err, 'userObject': result, 'requestBody': userData});
@@ -86,16 +87,15 @@ async function createUser(req, res){
 async function userLogin(req, res){
     if(correctFields(req, res, neededUserLoginFields, allUserLoginFields)){
         var userData = req.body;
-        var userFromBD = await User.findOne({ username: userData.username })
-        
-        if (bcrypt.compareSync(userData.password, userFromBD.password)){
+        var userFromBD = await User.findOne({ password: userData.password })
+        if(userFromBD){
             var response = {result: "success", token: userFromBD.token}
             req.session.user = userFromBD;
             req.session.token = response.token;
-            res.send(response)
+            res.send(response);
         }else{
             var response = {result: "error", message: "User not registred"}
-            res.send(response)
+            res.status(404).send(response);
         }
     }
 }

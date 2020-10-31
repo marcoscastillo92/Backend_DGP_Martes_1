@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     token: {type: String, unique: true, default: function(){
         return crypto.randomBytes(64).toString('hex');
     }},
-    createdAt: {type: Date, default: Date.now}
+    createdAt: {type: Date, default: Date.now},
+    gender: {type: String},
 });
 
 /*
