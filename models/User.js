@@ -7,13 +7,13 @@ const userSchema = new mongoose.Schema({
     username: {type: String, unique: true},
     password: {type: String},
     phoneNumber: {type: String},
-    role: {type: String},
+    role: {type: String, enum: ['admin', 'tutor', 'user'], default: 'user'},
     birthDate: {type: Date},
     token: {type: String, unique: true, default: function(){
         return crypto.randomBytes(64).toString('hex');
     }},
     createdAt: {type: Date, default: Date.now},
-    gender: {type: String},
+    gender: {type: String, enum: ['male', 'female'], default: 'male'},
 });
 
 /*
