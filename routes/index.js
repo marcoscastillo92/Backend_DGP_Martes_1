@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-  res.render('index', { title: 'API Asociación Vale' });
+  res.render('index', { title: 'Asociación Vale' });
 });
 
 /* GET Insert Pictograms */

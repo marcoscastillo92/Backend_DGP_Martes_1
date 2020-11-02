@@ -1,7 +1,21 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+ .bg-info
+    head
+      title= title
+      style 
+        include ../docs/css/style.css
+        include ../docs/vendor/bootstrap.min.css
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    header
+      block header
+      <div class="page-header" style=" background-color:  #6ebbff;margin-top: 5px ; margin-bottom: 2%">
+          <img src="https://pbs.twimg.com/profile_images/1269991919989460992/0daDHcwX_400x400.jpg" width="30" height="30" class="d-inline-block align-top" alt="" style="float:left; margin-left:1% ;margin-right: 2%;">
+          <h1>Asociacion VALE </h1>
+        
+      </div>
+    body
+    
+        block content
+    
