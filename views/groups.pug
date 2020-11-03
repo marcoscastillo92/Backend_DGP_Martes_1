@@ -1,4 +1,22 @@
 extends tutor
 
 block content 
+    table
+        th Nombre
+        th Participantes
+        th Categoría
+        th Fecha de Creación
+        tr(class="fila")
+        each group in groups
+            td= group.name
+            td= group.memberCount
+            td= group.category
+            td= group.createdAt
+            td
+                form(action="/tutors/groupDetail" method="post")
+                    input(type="hidden" name="groupId" value=group._id)
+                    input(type="hidden" name="users" value=group.users)
+                    button Ver grupo
+            tr(class="fila")
+
     

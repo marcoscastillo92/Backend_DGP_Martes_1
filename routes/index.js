@@ -1,5 +1,6 @@
 var express = require('express');
 const Pictogram = require('../models/Pictogram');
+const Group = require('../models/Group');
 var router = express.Router();
 const uuidv4 = require('uuid/v4');
 
@@ -30,6 +31,34 @@ router.get('/insert-pictograms', async function(req, res, next) {
   newPictogram = new Pictogram({"name":"caballo","key": uuidv4(),"section":"login"});
   await newPictogram.save();
 
+});
+
+router.post('/insert-groups', async function(req, res, next){
+  var newGroup = new Group({"name":"grupo1", "memberCount":"50", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+
+  newGroup = new Group({"name":"grupo2", "memberCount":"10", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+
+  newGroup = new Group({"name":"grupo3", "memberCount":"30", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+
+  newGroup = new Group({"name":"grupo4", "memberCount":"40", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+
+  newGroup = new Group({"name":"grupo5", "memberCount":"20", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+
+  newGroup = new Group({"name":"grupo1", "memberCount":"90", "category":"ROL", "users":"pepe, david, maría"})
+  await newGroup.save()
+  
+  res.send("Grupos introducidos")
+});
+
+router.get('/get-groups', async function(req, res, next){
+  var groups = await Group.find()
+  
+  res.send(groups)
 });
 
 /* GET Get Pictograms */

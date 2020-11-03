@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-var User = require('User');
+var User = require('./User');
 
 const groupSchema = new mongoose.Schema({
     name: {type: String},
     memberCount: {type: String},
     category: {type: String},
-    users: [User],
+    users: {type:String},
     createdAt: {type: Date, default: Date.now}
 });
 
